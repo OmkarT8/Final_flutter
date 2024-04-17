@@ -36,7 +36,7 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
     activateCleverTapFlutterPluginHandlers();
     CleverTapPlugin.setDebugLevel(3);
     CleverTapPlugin.enableDeviceNetworkInfoReporting(true);
-    CleverTapPlugin.initializeInbox();
+    // CleverTapPlugin.initializeInbox();
     var pushPrimerJSON = {
       'inAppType': 'alert',
       'titleText': 'Get Notified',
@@ -148,7 +148,6 @@ void getAdUnits() {
     this.setState(() async {
       List? displayUnits = await CleverTapPlugin.getAllDisplayUnits();
       print("Display Units Payload = " + displayUnits.toString());
-
       displayUnits?.forEach((element) {
         var customExtras = element["title"];
         if (customExtras != null) {
@@ -314,6 +313,7 @@ void getAdUnits() {
                 child: const Text("Flutter In-App")),
             ElevatedButton(
                 onPressed: () {
+                  CleverTapPlugin.initializeInbox();
                   inboxDidInitialize();
                 },
                 style: ElevatedButton.styleFrom(

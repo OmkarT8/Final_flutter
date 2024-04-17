@@ -47,7 +47,8 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
       'fallbackToSettings': true
     };
     CleverTapPlugin.promptPushPrimer(pushPrimerJSON);
-    CleverTapPlugin.createNotificationChannel("TAM-RO", "TAM-RO", "TAM-RO", 5, true);
+    CleverTapPlugin.createNotificationChannel(
+        "TAM-RO", "TAM-RO", "TAM-RO", 5, true);
   }
 
   void activateCleverTapFlutterPluginHandlers() {
@@ -75,7 +76,8 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
         inAppNotificationButtonClicked);
     _clevertapPlugin.setCleverTapInboxNotificationButtonClickedHandler(
         inboxNotificationButtonClicked);
-        _clevertapPlugin.setCleverTapDisplayUnitsLoadedHandler(onDisplayUnitsLoaded);
+    _clevertapPlugin
+        .setCleverTapDisplayUnitsLoadedHandler(onDisplayUnitsLoaded);
   }
 
   void pushClickedPayloadReceived(Map<String, dynamic> notificationPayload) {
@@ -139,23 +141,31 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
   }
 
   void onDisplayUnitsLoaded(List<dynamic>? displayUnits) {
-    this.setState(() {
-      print("Display Units = " + displayUnits.toString());
-   });
-}
-
-void getAdUnits() {
     this.setState(() async {
-      List? displayUnits = await CleverTapPlugin.getAllDisplayUnits();
+       List? displayUnits = await CleverTapPlugin.getAllDisplayUnits();
       print("Display Units Payload = " + displayUnits.toString());
+
       displayUnits?.forEach((element) {
-        var customExtras = element["title"];
+        var customExtras = element["custom_kv"];
         if (customExtras != null) {
            print("Display Units CustomExtras: " +  customExtras.toString());
          }
       });
-     });
-}
+  });
+  }
+
+  // void getAdUnits() {
+  //   this.setState(() async {
+  //     List? displayUnits = await CleverTapPlugin.getAllDisplayUnits();
+  //     print("Display Units Payload = " + displayUnits.toString());
+  //     displayUnits?.forEach((element) {
+  //       var customExtras = element["title"];
+  //       if (customExtras != null) {
+  //         print("Display Units CustomExtras: " + customExtras.toString());
+  //       }
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -333,6 +343,19 @@ void getAdUnits() {
                   foregroundColor: Colors.white,
                 ),
                 child: const Text("Event Page")),
+            Container(
+              width: double.infinity, // Set width to match the screen width
+              padding: EdgeInsets.all(16.0),
+              color: Colors.grey[200], // Set background color
+              child: Text(
+                // Text widget inside the container
+                'This is the end of the UI',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ],
         ),
       ),

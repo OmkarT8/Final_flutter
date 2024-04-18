@@ -57,29 +57,18 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
     // ignore: no_leading_underscores_for_local_identifiers
     late CleverTapPlugin _clevertapPlugin;
     _clevertapPlugin = CleverTapPlugin();
-    _clevertapPlugin.setCleverTapPushClickedPayloadReceivedHandler(
-        pushClickedPayloadReceived);
-    _clevertapPlugin.setCleverTapInAppNotificationButtonClickedHandler(
-        inAppNotificationButtonClicked);
+    _clevertapPlugin.setCleverTapPushClickedPayloadReceivedHandler(pushClickedPayloadReceived);
+    _clevertapPlugin.setCleverTapInAppNotificationButtonClickedHandler(inAppNotificationButtonClicked);
     _clevertapPlugin.setCleverTapInboxDidInitializeHandler(inboxDidInitialize);
-
-    _clevertapPlugin.setCleverTapPushClickedPayloadReceivedHandler(
-        pushClickedPayloadReceived);
-    _clevertapPlugin.setCleverTapInAppNotificationDismissedHandler(
-        inAppNotificationDismissed);
-    _clevertapPlugin
-        .setCleverTapProfileDidInitializeHandler(profileDidInitialize);
+    _clevertapPlugin.setCleverTapPushClickedPayloadReceivedHandler(pushClickedPayloadReceived);
+    _clevertapPlugin.setCleverTapInAppNotificationDismissedHandler(inAppNotificationDismissed);
+    _clevertapPlugin.setCleverTapProfileDidInitializeHandler(profileDidInitialize);
     _clevertapPlugin.setCleverTapProfileSyncHandler(profileDidUpdate);
-    _clevertapPlugin.setCleverTapInboxDidInitializeHandler(inboxDidInitialize);
-    _clevertapPlugin
-        .setCleverTapInboxMessagesDidUpdateHandler(inboxMessagesDidUpdate);
-
-    _clevertapPlugin.setCleverTapInAppNotificationButtonClickedHandler(
-        inAppNotificationButtonClicked);
-    _clevertapPlugin.setCleverTapInboxNotificationButtonClickedHandler(
-        inboxNotificationButtonClicked);
-    _clevertapPlugin
-        .setCleverTapDisplayUnitsLoadedHandler(onDisplayUnitsLoaded);
+    // _clevertapPlugin.setCleverTapInboxDidInitializeHandler(inboxDidInitialize);
+    _clevertapPlugin.setCleverTapInboxMessagesDidUpdateHandler(inboxMessagesDidUpdate);
+    _clevertapPlugin.setCleverTapInAppNotificationButtonClickedHandler(inAppNotificationButtonClicked);
+    _clevertapPlugin.setCleverTapInboxNotificationButtonClickedHandler(inboxNotificationButtonClicked);
+    _clevertapPlugin.setCleverTapDisplayUnitsLoadedHandler(onDisplayUnitsLoaded);
   }
 
   void pushClickedPayloadReceived(Map<String, dynamic> notificationPayload) {
@@ -150,21 +139,25 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
     this.setState(() async {
       List? displayUnits = await CleverTapPlugin.getAllDisplayUnits();
       print("Display Units Payload = " + displayUnits.toString());
-
+      var unitId=0;
       displayUnits?.forEach((element) {
         var customExtras = element["custom_kv"];
+        unitId=element["ti"];
         if (customExtras != null) {
           nativeTitle = customExtras['title'].toString();
           nativeSubtitle = customExtras['subtitle'].toString();
           nativeUrl = customExtras['url'].toString();
+          print("Payload :" + customExtras.toString());
           print("Title: " + nativeTitle);
           print("SubTitle: " + nativeSubtitle);
           print("URL: " + nativeUrl);
+          print("ti "+ unitId.toString());
         }
       });
+      CleverTapPlugin.pushDisplayUnitClickedEvent(unitId.toString());
+      CleverTapPlugin.pushDisplayUnitViewedEvent(unitId.toString());
     });
   }
-
   // void getAdUnits() {
   //   this.setState(() async {
   //     List? displayUnits = await CleverTapPlugin.getAllDisplayUnits();

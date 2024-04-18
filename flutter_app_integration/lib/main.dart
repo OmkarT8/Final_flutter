@@ -360,7 +360,7 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      'Title: $nativeTitle \n Subtitle: $nativeSubtitle',
+                      'Title: $nativeTitle \nSubtitle: $nativeSubtitle',
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.normal,

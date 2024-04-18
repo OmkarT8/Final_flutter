@@ -1,5 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, prefer_interpolation_to_compose_strings, avoid_print, use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, unused_element, unnecessary_this
 
+//import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:clevertap_plugin/clevertap_plugin.dart';
 
@@ -140,18 +142,27 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
     });
   }
 
+  var nativeTitle = '';
+  var nativeSubtitle = '';
+  var nativeUrl = '';
+
   void onDisplayUnitsLoaded(List<dynamic>? displayUnits) {
     this.setState(() async {
-       List? displayUnits = await CleverTapPlugin.getAllDisplayUnits();
+      List? displayUnits = await CleverTapPlugin.getAllDisplayUnits();
       print("Display Units Payload = " + displayUnits.toString());
 
       displayUnits?.forEach((element) {
         var customExtras = element["custom_kv"];
         if (customExtras != null) {
-           print("Display Units CustomExtras: " +  customExtras.toString());
-         }
+          nativeTitle = customExtras['title'].toString();
+          nativeSubtitle = customExtras['subtitle'].toString();
+          nativeUrl = customExtras['url'].toString();
+          print("Title: " + nativeTitle);
+          print("SubTitle: " + nativeSubtitle);
+          print("URL: " + nativeUrl);
+        }
       });
-  });
+    });
   }
 
   // void getAdUnits() {
@@ -166,7 +177,6 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
   //     });
   //   });
   // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -344,18 +354,37 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
                 ),
                 child: const Text("Event Page")),
             Container(
-              width: double.infinity, // Set width to match the screen width
-              padding: EdgeInsets.all(16.0),
-              color: Colors.grey[200], // Set background color
-              child: Text(
-                // Text widget inside the container
-                'This is the end of the UI',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+                width: double.infinity, // Set width to match the screen width
+                padding: EdgeInsets.all(16.0),
+                color: Colors.white,
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      'Title: $nativeTitle \n Subtitle: $nativeSubtitle',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Image.network(
+                      '$nativeUrl', // Replace with your image URL
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        }
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        );
+                      }, // Add some space between text and image
+                    )
+                  ],
+                )),
           ],
         ),
       ),

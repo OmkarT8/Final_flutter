@@ -139,23 +139,23 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
     this.setState(() async {
       List? displayUnits = await CleverTapPlugin.getAllDisplayUnits();
       print("Display Units Payload = " + displayUnits.toString());
-      var unitId=0;
+      dynamic unitId;
       displayUnits?.forEach((element) {
+        unitId=element["wzrk_id"];
         var customExtras = element["custom_kv"];
-        unitId=element["ti"];
         if (customExtras != null) {
           nativeTitle = customExtras['title'].toString();
           nativeSubtitle = customExtras['subtitle'].toString();
           nativeUrl = customExtras['url'].toString();
-          print("Payload :" + customExtras.toString());
+          print("Payload: " + customExtras.toString());
           print("Title: " + nativeTitle);
           print("SubTitle: " + nativeSubtitle);
           print("URL: " + nativeUrl);
-          print("ti "+ unitId.toString());
+          print("unitId: "+ unitId.toString());
         }
       });
-      CleverTapPlugin.pushDisplayUnitClickedEvent(unitId.toString());
       CleverTapPlugin.pushDisplayUnitViewedEvent(unitId.toString());
+      CleverTapPlugin.pushDisplayUnitClickedEvent(unitId.toString());
     });
   }
   // void getAdUnits() {
